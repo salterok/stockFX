@@ -1,0 +1,4 @@
+<?import controls.ProgressiveTabPane?>
+<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.GridPane" xmlns:fx="http://javafx.com/fxml/1" alignment="center" hgap="10" vgap="10">
+    <ProgressiveTabPane fx:id="progressivePane" />
+</fx:root>
