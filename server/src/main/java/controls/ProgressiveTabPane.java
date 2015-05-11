@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import pojo.ProgressiveViewItem;
 import utils.ControlBuilder;
 
 import java.util.*;
@@ -26,15 +27,15 @@ public class ProgressiveTabPane extends BorderPane {
     @FXML
     private AnchorPane content;
 
-    private List<Map.Entry<String, Pane>> navBar = new ArrayList<>();
+    private List<Map.Entry<String, ProgressiveViewItem>> navBar = new ArrayList<>();
 
 
     public ProgressiveTabPane() throws Exception {
         ControlBuilder.build(this);
     }
 
-    public void addProgressItem(String title, Pane pane) {
-        navBar.add(new AbstractMap.SimpleImmutableEntry<>(title, pane));
+    public void addProgressItem(ProgressiveViewItem item) {
+        navBar.add(new AbstractMap.SimpleImmutableEntry<>(item.id, item));
     }
 
     public void setup() {
@@ -56,12 +57,12 @@ public class ProgressiveTabPane extends BorderPane {
     }
 
     private void setContent(String title) {
-        Optional<Pane> pane = navBar.stream()
+        Optional<ProgressiveViewItem> pane = navBar.stream()
                 .filter(entry -> entry.getKey().equals(title))
                 .findFirst()
                 .map(Map.Entry::getValue);
         content.getChildren().clear();
         if (pane.isPresent())
-            content.getChildren().add(pane.get());
+            content.getChildren().add(pane.get().instance);
     }
 }

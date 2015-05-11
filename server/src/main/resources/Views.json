@@ -1,0 +1,20 @@
+{
+  "classpath": "views",
+  "views": [
+    {
+      "id": "start",
+      "title": "start",
+      "ref": "Start.java"
+    },
+    {
+      "id": "import",
+      "title": "import",
+      "ref": "Import.java"
+    },
+    {
+      "id": "settings",
+      "title": "settings",
+      "ref": "Settings.java"
+    }
+  ]
+}
