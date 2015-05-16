@@ -2,6 +2,7 @@ package controls;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -47,10 +48,19 @@ public class ProgressiveTabPane extends BorderPane {
 
     private void initProgressiveItems() {
         navBar.forEach(item -> {
-            IProgressiveTabPaneItem view = (IProgressiveTabPaneItem)item.instance;
-            view.setPrevCommand(this::navigatePrev);
-            view.setNextCommand(this::navigateNext);
-            view.setCustomCommand(this::navigateCustom);
+            if (item.instance instanceof IProgressiveBasicRouting) {
+                IProgressiveBasicRouting view = (IProgressiveBasicRouting)item.instance;
+                view.setPrevCommand(this::navigatePrev);
+                view.setNextCommand(this::navigateNext);
+            }
+            if (item.instance instanceof IProgressiveCustomRouting) {
+                IProgressiveCustomRouting view = (IProgressiveCustomRouting)item.instance;
+                view.setCustomCommand(this::navigateCustom);
+            }
+            AnchorPane.setTopAnchor(item.instance, 0d);
+            AnchorPane.setBottomAnchor(item.instance, 0d);
+            AnchorPane.setLeftAnchor(item.instance, 0d);
+            AnchorPane.setRightAnchor(item.instance, 0d);
         });
     }
 
@@ -63,7 +73,7 @@ public class ProgressiveTabPane extends BorderPane {
 
     private void navigatePrev() {
         int prevIndex = currentItemIndex - 1;
-        if (navBar.size() > prevIndex) {
+        if (prevIndex >= 0) {
             setContent(navBar.get(prevIndex));
         }
     }
@@ -74,6 +84,10 @@ public class ProgressiveTabPane extends BorderPane {
                 .findFirst();
         if (pane.isPresent())
             setContent(pane.get());
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText(String.format("There is no view '%s'", key));
+        }
     }
 
     private void drawProgressiveBar() {

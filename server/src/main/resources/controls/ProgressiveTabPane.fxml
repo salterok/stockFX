@@ -10,7 +10,7 @@
 
 <fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <center>
-        <AnchorPane fx:id="content" />
+        <AnchorPane fx:id="content"/>
     </center>
     <left>
         <AnchorPane>
@@ -22,35 +22,7 @@
                                 <Button fx:id="helpBtn" layoutX="19.0" layoutY="19.0" mnemonicParsing="false" text="Справка" />
                             </children>
                         </Pane>
-                        <VBox fx:id="progressiveBar">
-                            <children>
-                                <HBox style="-fx-background-color: #2c2;">
-                                    <children>
-                                        <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: #c22;" text="Button" HBox.hgrow="ALWAYS" />
-                                    </children>
-                                    <padding>
-                                        <Insets bottom="2.0" top="2.0" />
-                                    </padding>
-                                </HBox>
-                                <HBox style="-fx-background-color: #2c2;">
-                                    <children>
-                                        <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: #c22;" text="Button" HBox.hgrow="ALWAYS" />
-                                    </children>
-                                    <padding>
-                                        <Insets bottom="2.0" top="2.0" />
-                                    </padding>
-                                </HBox>
-                                <HBox style="-fx-background-color: #2c2;">
-                                    <children>
-                                        <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: #c22;" text="Button" HBox.hgrow="ALWAYS" />
-                                    </children>
-                                    <padding>
-                                        <Insets bottom="2.0" top="2.0" />
-                                    </padding>
-                                </HBox>
-                                <Label maxWidth="1.7976931348623157E308" text="Label" HBox.hgrow="ALWAYS" />
-                            </children>
-                        </VBox>
+                        <VBox fx:id="progressiveBar"/>
                         <Pane prefHeight="200.0">
                             <children>
                                 <Button fx:id="escapeBtn" layoutX="25.0" layoutY="19.0" mnemonicParsing="false" text="Выход" />

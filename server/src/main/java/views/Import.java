@@ -4,13 +4,12 @@
 
 package views;
 
-import controls.IProgressiveTabPaneItem;
+import controls.IProgressiveBasicRouting;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import utils.ControlBuilder;
 
 import java.util.function.Consumer;
-public class Import extends GridPane implements IProgressiveTabPaneItem {
+public class Import extends GridPane implements IProgressiveBasicRouting {
     public Import() throws Exception {
         ControlBuilder.build(this);
     }
@@ -22,11 +21,6 @@ public class Import extends GridPane implements IProgressiveTabPaneItem {
 
     @Override
     public void setPrevCommand(Runnable command) {
-
-    }
-
-    @Override
-    public void setCustomCommand(Consumer<String> command) {
 
     }
 }
