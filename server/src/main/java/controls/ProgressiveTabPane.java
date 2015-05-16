@@ -1,7 +1,6 @@
 package controls;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +11,6 @@ import utils.ControlBuilder;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by salterok on 04.05.2015.
@@ -27,7 +25,8 @@ public class ProgressiveTabPane extends BorderPane {
     @FXML
     private AnchorPane content;
 
-    private List<Map.Entry<String, ProgressiveViewItem>> navBar = new ArrayList<>();
+    private List<ProgressiveViewItem> navBar = new ArrayList<>();
+    private int currentItemIndex = -1;
 
 
     public ProgressiveTabPane() throws Exception {
@@ -35,18 +34,52 @@ public class ProgressiveTabPane extends BorderPane {
     }
 
     public void addProgressItem(ProgressiveViewItem item) {
-        navBar.add(new AbstractMap.SimpleImmutableEntry<>(item.id, item));
+        navBar.add(item);
     }
 
     public void setup() {
         drawProgressiveBar();
-        setContent("start");
+        initProgressiveItems();
+        Optional<ProgressiveViewItem> item = navBar.stream().findFirst();
+        if (item.isPresent())
+            setContent(item.get());
+    }
+
+    private void initProgressiveItems() {
+        navBar.forEach(item -> {
+            IProgressiveTabPaneItem view = (IProgressiveTabPaneItem)item.instance;
+            view.setPrevCommand(this::navigatePrev);
+            view.setNextCommand(this::navigateNext);
+            view.setCustomCommand(this::navigateCustom);
+        });
+    }
+
+    private void navigateNext() {
+        int nextIndex = currentItemIndex + 1;
+        if (navBar.size() > nextIndex) {
+            setContent(navBar.get(nextIndex));
+        }
+    }
+
+    private void navigatePrev() {
+        int prevIndex = currentItemIndex - 1;
+        if (navBar.size() > prevIndex) {
+            setContent(navBar.get(prevIndex));
+        }
+    }
+
+    private void navigateCustom(String key) {
+        Optional<ProgressiveViewItem> pane = navBar.stream()
+                .filter(entry -> entry.id.equals(key))
+                .findFirst();
+        if (pane.isPresent())
+            setContent(pane.get());
     }
 
     private void drawProgressiveBar() {
         List<HBox> items = navBar.stream().map(entry -> {
             HBox hBox = new HBox();
-            Label label = new Label(entry.getKey());
+            Label label = new Label(entry.title);
             HBox.setHgrow(label, Priority.ALWAYS);
             hBox.paddingProperty().setValue(new Insets(2.0, 0.0, 2.0, 0.0));
             hBox.getChildren().add(label);
@@ -56,13 +89,9 @@ public class ProgressiveTabPane extends BorderPane {
         progressiveBar.getChildren().addAll(items);
     }
 
-    private void setContent(String title) {
-        Optional<ProgressiveViewItem> pane = navBar.stream()
-                .filter(entry -> entry.getKey().equals(title))
-                .findFirst()
-                .map(Map.Entry::getValue);
+    private void setContent(ProgressiveViewItem item) {
         content.getChildren().clear();
-        if (pane.isPresent())
-            content.getChildren().add(pane.get().instance);
+        currentItemIndex = navBar.indexOf(item);
+        content.getChildren().add(item.instance);
     }
 }
