@@ -22,7 +22,7 @@
                                 <Button fx:id="helpBtn" layoutX="19.0" layoutY="19.0" mnemonicParsing="false" text="Справка" />
                             </children>
                         </Pane>
-                        <VBox fx:id="progressiveBar"/>
+                        <VBox fx:id="progressiveBar" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0"/>
                         <Pane prefHeight="200.0">
                             <children>
                                 <Button fx:id="escapeBtn" layoutX="25.0" layoutY="19.0" mnemonicParsing="false" text="Выход" />

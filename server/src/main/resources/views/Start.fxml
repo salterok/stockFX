@@ -5,14 +5,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: red;" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <bottom>
-      <Pane BorderPane.alignment="BOTTOM_CENTER">
-         <children>
-            <Button fx:id="nextBtn" mnemonicParsing="false" onAction="#next" text="Next" />
-         </children>
-      </Pane>
-   </bottom>
+<fx:root style="-fx-background-color: red;" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>

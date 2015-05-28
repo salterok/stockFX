@@ -9,18 +9,8 @@ import javafx.scene.layout.GridPane;
 import utils.ControlBuilder;
 
 import java.util.function.Consumer;
-public class Import extends GridPane implements IProgressiveBasicRouting {
+public class Import extends BaseNavigableView {
     public Import() throws Exception {
-        ControlBuilder.build(this);
-    }
-
-    @Override
-    public void setNextCommand(Runnable command) {
-
-    }
-
-    @Override
-    public void setPrevCommand(Runnable command) {
 
     }
 }

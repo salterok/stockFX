@@ -48,15 +48,11 @@ public class ProgressiveTabPane extends BorderPane {
 
     private void initProgressiveItems() {
         navBar.forEach(item -> {
-            if (item.instance instanceof IProgressiveBasicRouting) {
-                IProgressiveBasicRouting view = (IProgressiveBasicRouting)item.instance;
-                view.setPrevCommand(this::navigatePrev);
-                view.setNextCommand(this::navigateNext);
-            }
-            if (item.instance instanceof IProgressiveCustomRouting) {
-                IProgressiveCustomRouting view = (IProgressiveCustomRouting)item.instance;
-                view.setCustomCommand(this::navigateCustom);
-            }
+            item.instance.setNavigationBar(item.navs);
+            item.instance.setPrevCommand(this::navigatePrev);
+            item.instance.setNextCommand(this::navigateNext);
+            item.instance.setCustomCommand(this::navigateCustom);
+
             AnchorPane.setTopAnchor(item.instance, 0d);
             AnchorPane.setBottomAnchor(item.instance, 0d);
             AnchorPane.setLeftAnchor(item.instance, 0d);
