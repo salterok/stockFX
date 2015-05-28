@@ -1,0 +1,62 @@
+[
+    {
+        "id": "start",
+        "title": "start",
+        "ref": "views.Start",
+        "navs": [
+            {
+                "title": "Дальше",
+                "method": "NEXT"
+            },
+            {
+                "title": "Назад",
+                "method": "PREV"
+            },
+            {
+                "title": "sss",
+                "method": "CUSTOM",
+                "isEnabled": false
+            }
+        ]
+    },
+    {
+        "id": "import",
+        "title": "import",
+        "ref": "views.Import",
+        "navs": [
+            {
+                "title": "Дальше",
+                "method": "NEXT"
+            },
+            {
+                "title": "Назад",
+                "method": "PREV"
+            },
+            {
+                "title": "sss",
+                "method": "CUSTOM",
+                "isEnabled": false
+            }
+        ]
+    },
+    {
+        "id": "settings",
+        "title": "settings",
+        "ref": "views.Settings",
+        "navs": [
+            {
+                "title": "Дальше",
+                "method": "NEXT"
+            },
+            {
+                "title": "Назад",
+                "method": "PREV"
+            },
+            {
+                "title": "sss",
+                "method": "CUSTOM",
+                "isEnabled": false
+            }
+        ]
+    }
+]
