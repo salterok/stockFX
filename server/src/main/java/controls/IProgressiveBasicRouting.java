@@ -8,5 +8,5 @@ import pojo.NavigationDescriptor;
 public interface IProgressiveBasicRouting {
     void setNextCommand(Runnable command);
     void setPrevCommand(Runnable command);
-    void setNavigationBar(NavigationDescriptor[] navs);
+    void setNavigation(NavigationDescriptor[] navs);
 }

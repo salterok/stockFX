@@ -11,8 +11,8 @@
          <center>
             <VBox alignment="CENTER" layoutX="74.0" layoutY="51.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" text="%start_inv" />
-                  <Button mnemonicParsing="false" text="%view_reports" />
+                  <Button fx:id="start_inv" mnemonicParsing="false" text="%start_inv" />
+                  <Button fx:id="view_reports" mnemonicParsing="false" text="%view_reports" />
                </children>
                <BorderPane.margin>
                   <Insets />

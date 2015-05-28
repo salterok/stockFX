@@ -1,14 +1,17 @@
 package views;
 
+import constants.NavigationMethod;
 import controls.IProgressiveBasicRouting;
 import controls.IProgressiveCustomRouting;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import pojo.NavigationDescriptor;
 import utils.ControlBuilder;
 
@@ -65,33 +68,54 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
 
     }
 
-    public void setNavigationBar(NavigationDescriptor[] navs) {
+    public void setNavigation(NavigationDescriptor[] navs) {
         if (navs == null) {
             return;
         }
         HBox pane = new HBox();
         pane.alignmentProperty().setValue(Pos.BOTTOM_RIGHT);
         for (NavigationDescriptor nav : navs) {
-            String title = nav.title.startsWith("%") ? resourceBundle.getString(nav.title.substring(1)) : nav.title;
-            Button btn = new Button(title);
-            btn.setUserData(nav);
-            EventHandler<ActionEvent> handler;
-            switch (nav.method) {
-                case PREV:
-                    handler = this::prev;
-                    break;
-                case NEXT:
-                    handler = this::next;
-                    break;
-                case CUSTOM:
-                default:
-                    handler = this::custom;
-                    break;
+            if (nav.id != null) {
+                bindNavigation(nav);
+                continue;
             }
+            Button btn = new Button(getLocalized(nav.title));
+            btn.setUserData(nav);
             btn.setDisable(!nav.isEnabled);
-            btn.setOnAction(handler);
+            btn.setOnAction(getAction(nav.method));
             pane.getChildren().add(btn);
         }
         this.setBottom(pane);
+    }
+
+    private EventHandler<ActionEvent> getAction(NavigationMethod method) {
+        switch (method) {
+            case PREV:
+                return this::prev;
+            case NEXT:
+                return this::next;
+            case CUSTOM:
+            default:
+                return this::custom;
+        }
+    }
+
+    private String getLocalized(String value) {
+        return value.startsWith("%") ? resourceBundle.getString(value.substring(1)) : value;
+    }
+
+    private void bindNavigation(NavigationDescriptor nav) {
+        Node node = this.lookup(nav.id);
+        if (node == null) {
+            throw new RuntimeException(String.format("Element with id %s not found", nav.id));
+        }
+        if (!(node instanceof ButtonBase)) {
+            throw new RuntimeException(String.format("Id %s must reference to ButtonBase element", nav.id));
+        }
+        ButtonBase el = (ButtonBase)node;
+        String title = getLocalized(nav.title);
+        el.setText(title);
+        el.setOnAction(getAction(nav.method));
+        el.setUserData(nav);
     }
 }

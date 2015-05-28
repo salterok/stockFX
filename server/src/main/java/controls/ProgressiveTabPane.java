@@ -48,7 +48,7 @@ public class ProgressiveTabPane extends BorderPane {
 
     private void initProgressiveItems() {
         navBar.forEach(item -> {
-            item.instance.setNavigationBar(item.navs);
+            item.instance.setNavigation(item.navs);
             item.instance.setPrevCommand(this::navigatePrev);
             item.instance.setNextCommand(this::navigateNext);
             item.instance.setCustomCommand(this::navigateCustom);
@@ -83,6 +83,7 @@ public class ProgressiveTabPane extends BorderPane {
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(String.format("There is no view '%s'", key));
+            alert.show();
         }
     }
 
