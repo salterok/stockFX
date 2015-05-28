@@ -14,7 +14,9 @@ public class ControlBuilder {
 
     private static void _build(Object instance, String path) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(instance.getClass().getResource(path));
-        ResourceBundle bundle = ResourceBundle.getBundle("bundles." + instance.getClass().getSimpleName(), locale);
+        ResourceBundle bundle = ResourceBundle.getBundle("bundles." + instance.getClass().getSimpleName(),
+                locale,
+                new UTF8Control());
         fxmlLoader.setResources(bundle);
         fxmlLoader.setRoot(instance);
         fxmlLoader.setController(instance);
