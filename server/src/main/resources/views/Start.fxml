@@ -5,11 +5,29 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root style="-fx-background-color: red;" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="248.0" prefWidth="324.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <VBox alignment="CENTER" layoutX="74.0" layoutY="51.0" spacing="20.0">
+               <children>
+                  <Button mnemonicParsing="false" text="%start_inv" />
+                  <Button mnemonicParsing="false" text="%view_reports" />
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+         <top>
+            <Label lineSpacing="1.5" prefHeight="114.0" prefWidth="324.0" text="%wnd_about" textAlignment="JUSTIFY" wrapText="true" BorderPane.alignment="CENTER">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding></Label>
+         </top>
+      </BorderPane>
    </center>
-   <padding>
-      <Insets top="20.0" />
-   </padding>
 </fx:root>
