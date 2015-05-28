@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 public class ControlBuilder {
     public static Locale locale = Locale.forLanguageTag("ru");
 
-    private static void _build(Object instance, String path) throws IOException {
+    private static ResourceBundle _build(Object instance, String path) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(instance.getClass().getResource(path));
         ResourceBundle bundle = ResourceBundle.getBundle("bundles." + instance.getClass().getSimpleName(),
                 locale,
@@ -21,13 +21,10 @@ public class ControlBuilder {
         fxmlLoader.setRoot(instance);
         fxmlLoader.setController(instance);
         fxmlLoader.load();
+        return bundle;
     }
 
-    public static void build(Object instance) throws IOException {
-        _build(instance, instance.getClass().getSimpleName() + ".fxml");
-    }
-
-    public static void build(Object instance, String viewPath) throws IOException {
-        _build(instance, viewPath);
+    public static ResourceBundle bindView(Object instance) throws IOException {
+       return  _build(instance, instance.getClass().getSimpleName() + ".fxml");
     }
 }

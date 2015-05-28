@@ -31,7 +31,7 @@ public class ProgressiveTabPane extends BorderPane {
 
 
     public ProgressiveTabPane() throws Exception {
-        ControlBuilder.build(this);
+        ControlBuilder.bindView(this);
     }
 
     public void addProgressItem(ProgressiveViewItem item) {

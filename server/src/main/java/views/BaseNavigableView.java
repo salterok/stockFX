@@ -1,6 +1,5 @@
 package views;
 
-import constants.NavigationMethod;
 import controls.IProgressiveBasicRouting;
 import controls.IProgressiveCustomRouting;
 import javafx.event.ActionEvent;
@@ -13,8 +12,7 @@ import javafx.scene.layout.HBox;
 import pojo.NavigationDescriptor;
 import utils.ControlBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 /**
@@ -24,9 +22,10 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     private Runnable nextCommand;
     private Runnable prevCommand;
     private Consumer<String> customCommand;
+    protected ResourceBundle resourceBundle;
 
-    public BaseNavigableView() throws Exception{
-        ControlBuilder.build(this);
+    public BaseNavigableView() throws Exception {
+        resourceBundle = ControlBuilder.bindView(this);
         init();
     }
 
@@ -62,7 +61,7 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
         customCommand.accept(desc.value);
     }
 
-    private void init() {
+    protected void init() {
 
     }
 
@@ -73,7 +72,8 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
         HBox pane = new HBox();
         pane.alignmentProperty().setValue(Pos.BOTTOM_RIGHT);
         for (NavigationDescriptor nav : navs) {
-            Button btn = new Button(nav.title);
+            String title = nav.title.startsWith("%") ? resourceBundle.getString(nav.title.substring(1)) : nav.title;
+            Button btn = new Button(title);
             btn.setUserData(nav);
             EventHandler<ActionEvent> handler;
             switch (nav.method) {
