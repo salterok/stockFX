@@ -19,15 +19,6 @@
                </BorderPane.margin>
             </VBox>
          </center>
-         <top>
-            <Label lineSpacing="1.5" prefHeight="114.0" prefWidth="324.0" text="%wnd_about" textAlignment="JUSTIFY" wrapText="true" BorderPane.alignment="CENTER">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding></Label>
-         </top>
       </BorderPane>
    </center>
 </fx:root>

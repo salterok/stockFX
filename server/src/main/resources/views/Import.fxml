@@ -1,6 +1,45 @@
-<?import controls.ProgressiveTabPane?>
-<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml/1">
-    <center>
+<?xml version="1.0" encoding="UTF-8"?>
 
-    </center>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane hgap="20.0">
+               <children>
+                  <TextField GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" text="%choose_file_btn" GridPane.columnIndex="1" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+            </GridPane>
+            <TabPane tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab text="%import_options_tab_title">
+                     <content>
+                        <Pane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="%import_preview_tab_title">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </center>
 </fx:root>

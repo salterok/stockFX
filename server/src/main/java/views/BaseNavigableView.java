@@ -6,12 +6,14 @@ import controls.IProgressiveCustomRouting;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.TextAlignment;
 import pojo.NavigationDescriptor;
 import utils.ControlBuilder;
 
@@ -22,6 +24,7 @@ import java.util.function.Consumer;
  * Created by salterok on 16.05.2015.
  */
 public class BaseNavigableView extends BorderPane implements IProgressiveBasicRouting, IProgressiveCustomRouting {
+    private static final String I18N_DESCRIPTION_KEY = "stage_desc";
     private Runnable nextCommand;
     private Runnable prevCommand;
     private Consumer<String> customCommand;
@@ -64,8 +67,18 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
         customCommand.accept(desc.value);
     }
 
-    protected void init() {
+    private void init() {
+        setupDescription();
+    }
 
+    protected void setupDescription() {
+        Label label = new Label();
+        label.paddingProperty().setValue(new Insets(20));
+        label.setText(resourceBundle.getString(I18N_DESCRIPTION_KEY));
+        label.setWrapText(true);
+        label.setTextAlignment(TextAlignment.JUSTIFY);
+        BorderPane.setAlignment(label, Pos.CENTER);
+        this.setTop(label);
     }
 
     public void setNavigation(NavigationDescriptor[] navs) {
