@@ -12,7 +12,7 @@
             <GridPane hgap="20.0">
                <children>
                   <TextField GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" text="%choose_file_btn" GridPane.columnIndex="1" />
+                  <Button mnemonicParsing="false" onAction="#selectImportFile" text="%choose_file_btn" GridPane.columnIndex="1" />
                </children>
                <columnConstraints>
                   <ColumnConstraints />

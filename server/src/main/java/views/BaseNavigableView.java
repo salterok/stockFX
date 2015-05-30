@@ -15,10 +15,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
 import pojo.NavigationDescriptor;
+import pojo.ProgressiveState;
 import utils.ControlBuilder;
 
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Created by salterok on 16.05.2015.
@@ -29,10 +31,16 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     private Runnable prevCommand;
     private Consumer<String> customCommand;
     protected ResourceBundle resourceBundle;
+    protected Supplier<ProgressiveState> stateSupplier;
 
     public BaseNavigableView() throws Exception {
         resourceBundle = ControlBuilder.bindView(this);
         init();
+    }
+
+    @Override
+    public void setStateGetter(Supplier<ProgressiveState> stateGetter) {
+        stateSupplier = stateGetter;
     }
 
     @Override
@@ -67,6 +75,16 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
         customCommand.accept(desc.value);
     }
 
+
+
+    protected String getString(String key) {
+        if (!resourceBundle.containsKey(key)) {
+            throw new RuntimeException(String.format("No property '%s' defined in bundle '%s' with lang '%s'",
+                    key, resourceBundle.getBaseBundleName(), resourceBundle.getLocale().toLanguageTag()));
+        }
+        return resourceBundle.getString(key);
+    }
+
     private void init() {
         setupDescription();
     }
@@ -74,7 +92,7 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     protected void setupDescription() {
         Label label = new Label();
         label.paddingProperty().setValue(new Insets(20));
-        label.setText(resourceBundle.getString(I18N_DESCRIPTION_KEY));
+        label.setText(getString(I18N_DESCRIPTION_KEY));
         label.setWrapText(true);
         label.setTextAlignment(TextAlignment.JUSTIFY);
         BorderPane.setAlignment(label, Pos.CENTER);
@@ -114,7 +132,7 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     }
 
     private String getLocalized(String value) {
-        return value.startsWith("%") ? resourceBundle.getString(value.substring(1)) : value;
+        return value.startsWith("%") ? getString(value.substring(1)) : value;
     }
 
     private void bindNavigation(NavigationDescriptor nav) {
