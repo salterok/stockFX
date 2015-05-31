@@ -29,13 +29,13 @@ import java.util.stream.Collectors;
 
 public class Import extends BaseNavigableView {
     @FXML
-    private TableView importPreviewTable;
+    private TableView<List<String>> importPreviewTable;
     @FXML
     private StackPane previewStack;
     @FXML
-    private ComboBox importFileDelimiter;
+    private ComboBox<String> importFileDelimiter;
     @FXML
-    private ComboBox importFileEncoding;
+    private ComboBox<String> importFileEncoding;
 
     private ProgressIndicator previewProgressIndicator = null;
 
@@ -65,8 +65,8 @@ public class Import extends BaseNavigableView {
 
     private LocalConfig.CSVReadProps getCSVReadProps() {
         LocalConfig.CSVReadProps props = new LocalConfig.CSVReadProps();
-        props.delim = importFileDelimiter.getValue().toString();
-        props.encoding = importFileEncoding.getValue().toString();
+        props.delim = importFileDelimiter.getValue();
+        props.encoding = importFileEncoding.getValue();
         return props;
     }
 
@@ -91,7 +91,7 @@ public class Import extends BaseNavigableView {
             CSVFormat format = CSVFormat.newFormat(props.delim.charAt(0));
             List<CSVRecord> records = CSVReader.readFromFile(stateSupplier.get().importState.selectedForImport,
                     format, Charset.forName(props.encoding), 100);
-            OptionalInt max = records.stream().mapToInt(r -> r.size()).max();
+            OptionalInt max = records.stream().mapToInt(CSVRecord::size).max();
             result.columns = max.getAsInt();
             for (CSVRecord rec : records) {
                 List<String> item = new ArrayList<>();
@@ -133,8 +133,8 @@ public class Import extends BaseNavigableView {
         });
     }
 
-    private void addCustomColumns(TableView table, int count, Map<String, String> options) {
-        ObservableList columns = table.getColumns();
+    private void addCustomColumns(TableView<List<String>> table, int count, Map<String, String> options) {
+        ObservableList<TableColumn<List<String>, ?>> columns = table.getColumns();
         columns.clear();
         columns.addAll(Collections.nCopies(count, 0)
                 .stream()
@@ -142,9 +142,9 @@ public class Import extends BaseNavigableView {
                 .collect(Collectors.toList()));
     }
 
-    private TableColumn createChooserColumn(Map<String, String> options) {
-        TableColumn<List<String>, String> col = new TableColumn<List<String>, String>();
-        ChoiceBox<Map.Entry<String, String>> choiceBox = new ChoiceBox<Map.Entry<String, String>>();
+    private TableColumn<List<String>, String> createChooserColumn(Map<String, String> options) {
+        TableColumn<List<String>, String> col = new TableColumn<>();
+        ChoiceBox<Map.Entry<String, String>> choiceBox = new ChoiceBox<>();
         choiceBox.setMaxWidth(1.7976931348623157E308);
         choiceBox.setItems(FXCollections.observableArrayList(options.entrySet()));
         choiceBox.setConverter(new StringConverter<Map.Entry<String, String>>() {
