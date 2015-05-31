@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -22,10 +23,10 @@ public class CSVReader {
         }
     }
 
-    public static List<CSVRecord> readFromFile(@NotNull File file, @NotNull CSVFormat format, int limit) throws IOException {
+    public static <T> List<CSVRecord> readFromFile(@NotNull File file, @NotNull CSVFormat format, Charset charset, int limit) throws IOException {
         List<CSVRecord> list = new ArrayList<>();
         try (InputStream inputStream = new FileInputStream(file)) {
-            final Reader reader = new InputStreamReader(inputStream, "UTF-8");
+            final Reader reader = new InputStreamReader(inputStream, charset);
             CSVParser parser = new CSVParser(reader, format);
             Iterator<CSVRecord> it = parser.iterator();
             for (int i = 0; i < limit; i++) {

@@ -11,6 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
@@ -36,6 +37,14 @@ public class TaskUtil {
         return ret;
     }
 
+    public static <R, T> Continuation<T> run(final Function<R, T> func, R val) {
+        ContinuationContext continuationContext = new ContinuationContext();
+        Continuation<T> continuation = continuationContext.<T>addContinuation(false);
+        Continuation ret = continuation.run(func, val);
+        continuationContext.next(null);
+        return ret;
+    }
+
     public static class Continuation<T> {
         ContinuationContext context;
         T val;
@@ -50,6 +59,21 @@ public class TaskUtil {
                 @Override
                 protected T call() throws Exception {
                     return func.get();
+                }
+            };
+            task.setOnSucceeded(state -> context.next(task.getValue()));
+
+            continuation.task = task;
+            return continuation;
+        }
+
+        public <R> Continuation<T> run(final Function<R, T> func, R val) {
+            Continuation<T> continuation = context.<T>addContinuation(true);
+
+            StatefulTask task = new StatefulTask<T>() {
+                @Override
+                protected T call() throws Exception {
+                    return func.apply(val);
                 }
             };
             task.setOnSucceeded(state -> context.next(task.getValue()));

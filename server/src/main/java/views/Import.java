@@ -4,35 +4,27 @@
 
 package views;
 
-import com.sun.javaws.progress.Progress;
-import controls.IProgressiveBasicRouting;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableListBase;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import pojo.Config;
+import pojo.LocalConfig;
 import utils.CSVReader;
-import utils.ControlBuilder;
+import utils.TableUtils;
 import utils.TaskUtil;
 
-import java.beans.EventHandler;
 import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
+import java.nio.charset.Charset;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Import extends BaseNavigableView {
@@ -40,6 +32,10 @@ public class Import extends BaseNavigableView {
     private TableView importPreviewTable;
     @FXML
     private StackPane previewStack;
+    @FXML
+    private ComboBox importFileDelimiter;
+    @FXML
+    private ComboBox importFileEncoding;
 
     private ProgressIndicator previewProgressIndicator = null;
 
@@ -61,9 +57,17 @@ public class Import extends BaseNavigableView {
         if (event.getSource() instanceof Tab) {
             Tab tab = (Tab)event.getSource();
             if (tab.isSelected()) {
-                TaskUtil.run(this::previewImport).thenUI(this::updatePreviewTable);
+                LocalConfig.CSVReadProps props = getCSVReadProps();
+                TaskUtil.run(this::previewImport, props).thenUI(this::updatePreviewTable);
             }
         }
+    }
+
+    private LocalConfig.CSVReadProps getCSVReadProps() {
+        LocalConfig.CSVReadProps props = new LocalConfig.CSVReadProps();
+        props.delim = importFileDelimiter.getValue().toString();
+        props.encoding = importFileEncoding.getValue().toString();
+        return props;
     }
 
     private void toggleProgressIndicator() {
@@ -77,15 +81,16 @@ public class Import extends BaseNavigableView {
         }
     }
 
-    private PreviewResult previewImport() {
+    private PreviewResult previewImport(LocalConfig.CSVReadProps props) {
         Platform.runLater(this::toggleProgressIndicator);
         PreviewResult result = new PreviewResult();
         List<List<String>> items = new ArrayList<>();
         try {
             Thread.sleep(200);
 
-            CSVFormat format = CSVFormat.newFormat(';');
-            List<CSVRecord> records = CSVReader.readFromFile(stateSupplier.get().importState.selectedForImport, format, 100);
+            CSVFormat format = CSVFormat.newFormat(props.delim.charAt(0));
+            List<CSVRecord> records = CSVReader.readFromFile(stateSupplier.get().importState.selectedForImport,
+                    format, Charset.forName(props.encoding), 100);
             OptionalInt max = records.stream().mapToInt(r -> r.size()).max();
             result.columns = max.getAsInt();
             for (CSVRecord rec : records) {
@@ -111,26 +116,50 @@ public class Import extends BaseNavigableView {
         return result;
     }
 
+    @Override
+    protected void onLoad() {
+        Config config = Config.getInstance();
+        importFileDelimiter.setItems(FXCollections.observableList(config.anImport.csvDelimiters));
+        importFileDelimiter.setValue(config.anImport.csvDelimiters.get(0));
+        importFileEncoding.setItems(FXCollections.observableList(config.anImport.fileEncoding));
+        importFileEncoding.setValue(config.anImport.fileEncoding.get(0));
+    }
+
     private void updatePreviewTable(PreviewResult result) {
-
-
         Platform.runLater(() -> {
-            addCustomColumns(importPreviewTable, result.columns, new String[] {"daa", "---"});
+            importPreviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            addCustomColumns(importPreviewTable, result.columns, Config.getInstance().anImport.columns);
             importPreviewTable.setItems(FXCollections.observableList(result.items));
         });
     }
 
-    private void addCustomColumns(TableView table, int count, String[] options) {
+    private void addCustomColumns(TableView table, int count, Map<String, String> options) {
         ObservableList columns = table.getColumns();
         columns.clear();
-        columns.addAll(Collections.nCopies(count, 0).stream().map(i -> createChooserColumn(options)).collect(Collectors.toList()));
+        columns.addAll(Collections.nCopies(count, 0)
+                .stream()
+                .map(i -> createChooserColumn(options))
+                .collect(Collectors.toList()));
     }
 
-    private TableColumn createChooserColumn(String[] options) {
-        TableColumn col = new TableColumn();
-        ChoiceBox choiceBox = new ChoiceBox();
-        choiceBox.setItems(FXCollections.observableArrayList(options));
+    private TableColumn createChooserColumn(Map<String, String> options) {
+        TableColumn<List<String>, String> col = new TableColumn<List<String>, String>();
+        ChoiceBox<Map.Entry<String, String>> choiceBox = new ChoiceBox<Map.Entry<String, String>>();
+        choiceBox.setMaxWidth(1.7976931348623157E308);
+        choiceBox.setItems(FXCollections.observableArrayList(options.entrySet()));
+        choiceBox.setConverter(new StringConverter<Map.Entry<String, String>>() {
+            @Override
+            public String toString(Map.Entry<String, String> object) {
+                return getLocalized(object.getValue());
+            }
+
+            @Override
+            public Map.Entry<String, String> fromString(String string) {
+                return null;
+            }
+        });
         col.setGraphic(choiceBox);
+        col.setCellValueFactory(TableUtils::readOnlyIndexedCellValueFactory);
         return col;
     }
 

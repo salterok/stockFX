@@ -87,6 +87,12 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
 
     private void init() {
         setupDescription();
+
+        onLoad();
+    }
+
+    protected void onLoad() {
+
     }
 
     protected void setupDescription() {
@@ -131,7 +137,7 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
         }
     }
 
-    private String getLocalized(String value) {
+    protected String getLocalized(String value) {
         return value.startsWith("%") ? getString(value.substring(1)) : value;
     }
 

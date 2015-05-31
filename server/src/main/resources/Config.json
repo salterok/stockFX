@@ -1,0 +1,14 @@
+{
+    "import": {
+        "csvDelimiters": [";", ","],
+        "fileEncoding": ["windows-1251", "UTF-8"],
+        "columns": {
+            "UNUSED": "%csv_column_unused",
+            "NUM": "%csv_column_num",
+            "ID": "%csv_column_id",
+            "NAME": "%csv_column_name",
+            "COUNT": "%csv_column_count",
+            "PRICE": "%csv_column_price"
+        }
+    }
+}
