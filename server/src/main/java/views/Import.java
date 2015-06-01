@@ -4,12 +4,14 @@
 
 package views;
 
+import app.ImportStage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
@@ -36,8 +38,10 @@ public class Import extends BaseNavigableView {
     private ComboBox<String> importFileDelimiter;
     @FXML
     private ComboBox<String> importFileEncoding;
-
+    @FXML
     private ProgressIndicator previewProgressIndicator = null;
+
+    private ImportStage importStage = new ImportStage();
 
     public Import() throws Exception {}
 
@@ -81,39 +85,21 @@ public class Import extends BaseNavigableView {
         }
     }
 
-    private PreviewResult previewImport(LocalConfig.CSVReadProps props) {
+    private LocalConfig.PreviewResult previewImport(LocalConfig.CSVReadProps props) {
         Platform.runLater(this::toggleProgressIndicator);
-        PreviewResult result = new PreviewResult();
-        List<List<String>> items = new ArrayList<>();
         try {
             Thread.sleep(200);
-
-            CSVFormat format = CSVFormat.newFormat(props.delim.charAt(0));
-            List<CSVRecord> records = CSVReader.readFromFile(stateSupplier.get().importState.selectedForImport,
-                    format, Charset.forName(props.encoding), 100);
-            OptionalInt max = records.stream().mapToInt(CSVRecord::size).max();
-            result.columns = max.getAsInt();
-            for (CSVRecord rec : records) {
-                List<String> item = new ArrayList<>();
-                int size = rec.size();
-                for (int i = 0; i < max.getAsInt(); i++) {
-                    if (i < size) {
-                        item.add(rec.get(i));
-                    }
-                    else {
-                        item.add("");
-                    }
-                }
-                items.add(item);
-            }
-            result.items = items;
+            LocalConfig.PreviewResult result = importStage.getPreviewData(
+                    stateSupplier.get().importState.selectedForImport, props);
+            // finally must be called after getPreviewData - local var for this case
+            return result;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        Platform.runLater(this::toggleProgressIndicator);
-        return result;
+        finally {
+            Platform.runLater(this::toggleProgressIndicator);
+        }
+        return null;
     }
 
     @Override
@@ -125,11 +111,13 @@ public class Import extends BaseNavigableView {
         importFileEncoding.setValue(config.anImport.fileEncoding.get(0));
     }
 
-    private void updatePreviewTable(PreviewResult result) {
+    private void updatePreviewTable(LocalConfig.PreviewResult result) {
         Platform.runLater(() -> {
-            importPreviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            addCustomColumns(importPreviewTable, result.columns, Config.getInstance().anImport.columns);
-            importPreviewTable.setItems(FXCollections.observableList(result.items));
+            if (result != null) {
+                importPreviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+                addCustomColumns(importPreviewTable, result.columns, Config.getInstance().anImport.columns);
+                importPreviewTable.setItems(FXCollections.observableList(result.items));
+            }
         });
     }
 
@@ -146,7 +134,9 @@ public class Import extends BaseNavigableView {
         TableColumn<List<String>, String> col = new TableColumn<>();
         ChoiceBox<Map.Entry<String, String>> choiceBox = new ChoiceBox<>();
         choiceBox.setMaxWidth(1.7976931348623157E308);
-        choiceBox.setItems(FXCollections.observableArrayList(options.entrySet()));
+        ObservableList<Map.Entry<String, String>> list = FXCollections.observableArrayList(options.entrySet());
+        choiceBox.setItems(list);
+        choiceBox.setValue(list.get(0));
         choiceBox.setConverter(new StringConverter<Map.Entry<String, String>>() {
             @Override
             public String toString(Map.Entry<String, String> object) {
@@ -163,8 +153,15 @@ public class Import extends BaseNavigableView {
         return col;
     }
 
-    private class PreviewResult {
-        public int columns;
-        public List<List<String>> items;
+    @Override
+    protected void next(ActionEvent event) {
+        Button btn = (Button)event.getSource();
+        btn.setDisable(true);
+        btn.setText(getString("import_importing"));
+        this.setCursor(Cursor.WAIT);
+        //this.setDisable(true);
+
+
+
     }
 }

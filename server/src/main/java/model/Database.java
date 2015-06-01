@@ -36,6 +36,14 @@ public class Database {
         }
     }
 
+    public static void dispose() {
+        try {
+            connectionSource.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static SprintRepository sprints;
     public static ItemRepository items;
     public static RealItemRepository realItems;

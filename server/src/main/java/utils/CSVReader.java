@@ -16,9 +16,9 @@ import java.util.List;
  * Created by salterok on 31.05.2015.
  */
 public class CSVReader {
-    public static List<CSVRecord> readFromFile(@NotNull File file, @NotNull CSVFormat format) throws IOException {
+    public static List<CSVRecord> readFromFile(@NotNull File file, @NotNull CSVFormat format, Charset charset) throws IOException {
         try (InputStream inputStream = new FileInputStream(file)) {
-            final Reader reader = new InputStreamReader(inputStream, "UTF-8");
+            final Reader reader = new InputStreamReader(inputStream, charset);
             return new CSVParser(reader, format).getRecords();
         }
     }

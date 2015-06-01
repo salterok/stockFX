@@ -41,7 +41,7 @@
                            <children>
                               <HBox alignment="CENTER" spacing="10.0">
                                  <children>
-                                    <Label text="%import_file_delimiter" />
+                                    <Label text="%import_file_delimiter" wrapText="true" />
                                     <ComboBox fx:id="importFileDelimiter" editable="true" />
                                  </children>
                                  <padding>
@@ -50,12 +50,21 @@
                               </HBox>
                               <HBox alignment="CENTER" spacing="10.0" GridPane.rowIndex="1">
                                  <children>
-                                    <Label text="%import_file_encoding">
+                                    <Label text="%import_file_encoding" wrapText="true">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
                                     </Label>
                                     <ComboBox fx:id="importFileEncoding" prefWidth="150.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label text="%import_bill_header_pattern" wrapText="true" />
+                                    <TextField fx:id="importBillPattern" editable="false" text="Счет " />
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

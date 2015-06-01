@@ -27,9 +27,9 @@ import java.util.function.Supplier;
  */
 public class BaseNavigableView extends BorderPane implements IProgressiveBasicRouting, IProgressiveCustomRouting {
     private static final String I18N_DESCRIPTION_KEY = "stage_desc";
-    private Runnable nextCommand;
-    private Runnable prevCommand;
-    private Consumer<String> customCommand;
+    protected Runnable nextCommand;
+    protected Runnable prevCommand;
+    protected Consumer<String> customCommand;
     protected ResourceBundle resourceBundle;
     protected Supplier<ProgressiveState> stateSupplier;
 
@@ -59,17 +59,17 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     }
 
     @FXML
-    private void next(ActionEvent event) {
+    protected void next(ActionEvent event) {
         nextCommand.run();
     }
 
     @FXML
-    private void prev(ActionEvent event) {
+    protected void prev(ActionEvent event) {
         prevCommand.run();
     }
 
     @FXML
-    private void custom(ActionEvent event) {
+    protected void custom(ActionEvent event) {
         Button btn = (Button)event.getSource();
         NavigationDescriptor desc = (NavigationDescriptor)btn.getUserData();
         customCommand.accept(desc.value);
