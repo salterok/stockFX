@@ -25,7 +25,7 @@
                   <Insets left="20.0" right="20.0" />
                </VBox.margin>
             </GridPane>
-            <TabPane tabClosingPolicy="UNAVAILABLE">
+            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
                <tabs>
                   <Tab text="%import_options_tab_title">
                      <content>
@@ -78,7 +78,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <StackPane fx:id="previewStack" layoutX="5.0" layoutY="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                              <StackPane fx:id="previewStack" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                  <children>
                                     <TableView fx:id="importPreviewTable" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                     </TableView>

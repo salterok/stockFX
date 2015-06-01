@@ -50,11 +50,11 @@ public class ImportStage {
     }
 
     public LocalConfig.PreviewResult getPreviewData(File file, LocalConfig.CSVReadProps props) throws IOException {
-        List<CSVRecord> records = getRecords(file, props, 100);
+        List<CSVRecord> records = getRecords(file, props, Config.getInstance().anImport.previewSize);
         return getData(records);
     }
 
-    public void importSprint() {
+    public void importSprint(File file, LocalConfig.CSVReadProps props) {
 
     }
 }

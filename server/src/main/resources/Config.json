@@ -9,6 +9,10 @@
             "NAME": "%csv_column_name",
             "COUNT": "%csv_column_count",
             "PRICE": "%csv_column_price"
-        }
+        },
+        "previewSize": 100
+    },
+    "db": {
+        "uri": "jdbc:sqlite:data/database.db"
     }
 }
