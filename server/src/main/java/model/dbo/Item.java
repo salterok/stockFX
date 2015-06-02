@@ -16,16 +16,24 @@ import java.sql.SQLException;
 @DatabaseTable(tableName = "Item")
 public class Item {
     public static final String ID = "Item_Id";
+    public static final String INV_NUMBER = "Item_InvNumber";
     public static final String SPRINT_ID = "Item_SprintId";
     public static final String NAME = "Item_Name";
+    public static final String BILL = "Item_Bill";
     public static final String PRICE = "Item_Price";
 
     @DatabaseField(generatedId = true, columnName = ID)
     public int id;
+    @DatabaseField(canBeNull = false, columnName = INV_NUMBER)
+    public int invNumber;
     @DatabaseField(canBeNull = false, columnName = SPRINT_ID, foreign = true, foreignColumnName = Sprint.ID, foreignAutoRefresh = true)
     public Sprint sprint;
     @DatabaseField(columnName = NAME, canBeNull = false)
     public String name;
+    @DatabaseField(columnName = BILL, canBeNull = true)
+    public String bill;
+    // not in db
+    public int count;
     @DatabaseField(columnName = PRICE)
     public float price;
     @ForeignCollectionField

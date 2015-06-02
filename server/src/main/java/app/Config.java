@@ -3,6 +3,7 @@ package app;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import constants.ImportColumns;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +44,7 @@ public class Config {
     public static class Import {
         public List<String> csvDelimiters = Collections.emptyList();
         public List<String> fileEncoding = Collections.emptyList();;
-        public Map<String, String> columns = Collections.emptyMap();
+        public Map<ImportColumns, String> columns = Collections.emptyMap();
         public int previewSize = 100;
     }
 

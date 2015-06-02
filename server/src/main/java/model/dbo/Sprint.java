@@ -23,11 +23,11 @@ public class Sprint {
 
     @DatabaseField(unique = true, generatedId = true, columnName = ID)
     public int id;
-    @DatabaseField(canBeNull = false, columnName = DATE_START)
+    @DatabaseField(canBeNull = true, columnName = DATE_START)
     public Date dateStart;
-    @DatabaseField(canBeNull = false, columnName = DATE_END)
+    @DatabaseField(canBeNull = true, columnName = DATE_END)
     public Date dateEnd;
-    @DatabaseField(canBeNull = false, columnName = OPERATOR)
+    @DatabaseField(canBeNull = true, columnName = OPERATOR)
     public String operator;
 
     @ForeignCollectionField

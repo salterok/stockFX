@@ -17,9 +17,9 @@ public class RealItem {
     public int id;
     @DatabaseField(canBeNull = false, columnName = ITEM_ID, foreign = true, foreignColumnName = Item.ID, foreignAutoRefresh = true)
     public Item item;
-    @DatabaseField(canBeNull = false, columnName = PLACE_ID, foreign = true, foreignColumnName = Place.ID, foreignAutoRefresh = true)
+    @DatabaseField(canBeNull = true, columnName = PLACE_ID, foreign = true, foreignColumnName = Place.ID, foreignAutoRefresh = true)
     public Place place;
-    @DatabaseField(canBeNull = false, columnName = STATE)
+    @DatabaseField(canBeNull = true, columnName = STATE)
     public State state;
 
     public enum State {

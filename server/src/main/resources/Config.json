@@ -5,7 +5,7 @@
         "columns": {
             "UNUSED": "%csv_column_unused",
             "NUM": "%csv_column_num",
-            "ID": "%csv_column_id",
+            "INV_NUM": "%csv_column_inv_id",
             "NAME": "%csv_column_name",
             "COUNT": "%csv_column_count",
             "PRICE": "%csv_column_price"

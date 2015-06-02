@@ -23,7 +23,7 @@
         "ref": "views.Import",
         "navs": [
             {
-                "title": "Дальше",
+                "title": "%make_import",
                 "method": "NEXT"
             },
             {

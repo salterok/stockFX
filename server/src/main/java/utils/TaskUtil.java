@@ -1,5 +1,6 @@
 package utils;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -88,7 +89,7 @@ public class TaskUtil {
             StatefulTask task = new StatefulTask<Void>() {
                 @Override
                 protected Void call() throws Exception {
-                    func.accept((T)this.context);
+                    Platform.runLater(() -> func.accept((T) this.context));
                     return null;
                 }
             };

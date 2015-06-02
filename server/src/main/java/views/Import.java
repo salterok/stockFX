@@ -5,6 +5,8 @@
 package views;
 
 import app.ImportStage;
+import com.sun.javafx.tk.Toolkit;
+import constants.ImportColumns;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import app.Config;
+import model.dbo.Item;
 import pojo.LocalConfig;
 import utils.TableUtils;
 import utils.TaskUtil;
@@ -34,6 +37,8 @@ public class Import extends BaseNavigableView {
     private ComboBox<String> importFileDelimiter;
     @FXML
     private ComboBox<String> importFileEncoding;
+    @FXML
+    private TextField importBillPattern;
     @FXML
     private ProgressIndicator previewProgressIndicator = null;
 
@@ -65,8 +70,10 @@ public class Import extends BaseNavigableView {
 
     private LocalConfig.CSVReadProps getCSVReadProps() {
         LocalConfig.CSVReadProps props = new LocalConfig.CSVReadProps();
+        props.file = stateSupplier.get().importState.selectedForImport;
         props.delim = importFileDelimiter.getValue();
         props.encoding = importFileEncoding.getValue();
+        props.billPattern = importBillPattern.getText();
         return props;
     }
 
@@ -85,8 +92,7 @@ public class Import extends BaseNavigableView {
         Platform.runLater(this::toggleProgressIndicator);
         try {
             Thread.sleep(200);
-            LocalConfig.PreviewResult result = importStage.getPreviewData(
-                    stateSupplier.get().importState.selectedForImport, props);
+            LocalConfig.PreviewResult result = importStage.getPreviewData(props);
             // finally must be called after getPreviewData - local var for this case
             return result;
         } catch (Exception e) {
@@ -108,16 +114,14 @@ public class Import extends BaseNavigableView {
     }
 
     private void updatePreviewTable(LocalConfig.PreviewResult result) {
-        Platform.runLater(() -> {
-            if (result != null) {
-                importPreviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-                addCustomColumns(importPreviewTable, result.columns, Config.getInstance().anImport.columns);
-                importPreviewTable.setItems(FXCollections.observableList(result.items));
-            }
-        });
+        if (result != null) {
+            importPreviewTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            addCustomColumns(importPreviewTable, result.columns, Config.getInstance().anImport.columns);
+            importPreviewTable.setItems(FXCollections.observableList(result.items));
+        }
     }
 
-    private void addCustomColumns(TableView<List<String>> table, int count, Map<String, String> options) {
+    private void addCustomColumns(TableView<List<String>> table, int count, Map<ImportColumns, String> options) {
         ObservableList<TableColumn<List<String>, ?>> columns = table.getColumns();
         columns.clear();
         columns.addAll(Collections.nCopies(count, 0)
@@ -126,21 +130,21 @@ public class Import extends BaseNavigableView {
                 .collect(Collectors.toList()));
     }
 
-    private TableColumn<List<String>, String> createChooserColumn(Map<String, String> options) {
+    private TableColumn<List<String>, String> createChooserColumn(Map<ImportColumns, String> options) {
         TableColumn<List<String>, String> col = new TableColumn<>();
-        ChoiceBox<Map.Entry<String, String>> choiceBox = new ChoiceBox<>();
+        ChoiceBox<Map.Entry<ImportColumns, String>> choiceBox = new ChoiceBox<>();
         choiceBox.setMaxWidth(1.7976931348623157E308);
-        ObservableList<Map.Entry<String, String>> list = FXCollections.observableArrayList(options.entrySet());
+        ObservableList<Map.Entry<ImportColumns, String>> list = FXCollections.observableArrayList(options.entrySet());
         choiceBox.setItems(list);
         choiceBox.setValue(list.get(0));
-        choiceBox.setConverter(new StringConverter<Map.Entry<String, String>>() {
+        choiceBox.setConverter(new StringConverter<Map.Entry<ImportColumns, String>>() {
             @Override
-            public String toString(Map.Entry<String, String> object) {
+            public String toString(Map.Entry<ImportColumns, String> object) {
                 return getLocalized(object.getValue());
             }
 
             @Override
-            public Map.Entry<String, String> fromString(String string) {
+            public Map.Entry<ImportColumns, String> fromString(String string) {
                 return null;
             }
         });
@@ -151,13 +155,42 @@ public class Import extends BaseNavigableView {
 
     @Override
     protected void next(ActionEvent event) {
-        Button btn = (Button)event.getSource();
+        Button btn = (Button) event.getSource();
         btn.setDisable(true);
         btn.setText(getString("import_importing"));
+        Cursor cursor = this.getCursor();
         this.setCursor(Cursor.WAIT);
         //this.setDisable(true);
 
+        LocalConfig.CSVReadProps props = getCSVReadProps();
 
+        TaskUtil.run(this::importSprintData, props).thenUI(c -> {
+            btn.setDisable(false);
+            btn.setText(getString("make_import"));
+            this.setCursor(cursor);
+            nextCommand.run();
+        });
+    }
 
+    private Void importSprintData(LocalConfig.CSVReadProps props) {
+        try {
+            List<TableColumn<List<String>, ?>> columns = importPreviewTable.getColumns();
+            List<Map.Entry<ImportColumns, Integer>> dataCols = columns.stream().map(c -> {
+                ChoiceBox<Map.Entry<ImportColumns, String>> choiceBox = (ChoiceBox) c.getGraphic();
+                return new AbstractMap.SimpleEntry<>(choiceBox.getValue().getKey(), columns.indexOf(c));
+            }).filter(c -> c.getKey() != ImportColumns.UNUSED).collect(Collectors.toList());
+
+            Map<ImportColumns, Integer> map = new HashMap<>();
+            for (Map.Entry<ImportColumns, Integer> col : dataCols) {
+                map.put(col.getKey(), col.getValue());
+            }
+            props.columnsBinding = map;
+
+            importStage.importSprint(props);
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }

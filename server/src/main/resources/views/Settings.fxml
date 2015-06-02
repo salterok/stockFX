@@ -1,4 +1,3 @@
-<?import controls.ProgressiveTabPane?>
 <fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml/1">
     <center>
 
