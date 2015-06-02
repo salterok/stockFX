@@ -5,17 +5,15 @@
         "ref": "views.Start",
         "navs": [
             {
-                "title": "Дальше",
+                "id": "#start_inv",
+                "title": "%start_inv",
                 "method": "NEXT"
             },
             {
-                "title": "Назад",
-                "method": "PREV"
-            },
-            {
-                "title": "sss",
+                "id": "#view_reports",
+                "title": "%view_reports",
                 "method": "CUSTOM",
-                "isEnabled": false
+                "value": "reports"
             }
         ]
     },
@@ -25,7 +23,7 @@
         "ref": "views.Import",
         "navs": [
             {
-                "title": "Дальше",
+                "title": "%make_import",
                 "method": "NEXT"
             },
             {

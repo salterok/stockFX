@@ -5,11 +5,20 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root style="-fx-background-color: red;" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="248.0" prefWidth="324.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <BorderPane BorderPane.alignment="CENTER">
+         <center>
+            <VBox alignment="CENTER" layoutX="74.0" layoutY="51.0" spacing="20.0">
+               <children>
+                  <Button fx:id="start_inv" mnemonicParsing="false" text="%start_inv" />
+                  <Button fx:id="view_reports" mnemonicParsing="false" text="%view_reports" />
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </VBox>
+         </center>
+      </BorderPane>
    </center>
-   <padding>
-      <Insets top="20.0" />
-   </padding>
 </fx:root>

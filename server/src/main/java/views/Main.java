@@ -21,7 +21,7 @@ public class Main extends BorderPane {
     private ProgressiveTabPane progressivePane;
 
     public Main() throws Exception {
-        ControlBuilder.build(this);
+        ControlBuilder.bindView(this);
         init();
     }
 

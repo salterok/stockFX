@@ -1,6 +1,95 @@
-<?import controls.ProgressiveTabPane?>
-<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml/1">
-    <center>
+<?xml version="1.0" encoding="UTF-8"?>
 
-    </center>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane hgap="20.0">
+               <children>
+                  <TextField GridPane.columnIndex="0" GridPane.hgrow="ALWAYS" />
+                  <Button mnemonicParsing="false" onAction="#selectImportFile" text="%choose_file_btn" GridPane.columnIndex="1" />
+               </children>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
+               <VBox.margin>
+                  <Insets left="20.0" right="20.0" />
+               </VBox.margin>
+            </GridPane>
+            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+               <tabs>
+                  <Tab text="%import_options_tab_title">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                          </rowConstraints>
+                           <children>
+                              <HBox alignment="CENTER" spacing="10.0">
+                                 <children>
+                                    <Label text="%import_file_delimiter" wrapText="true" />
+                                    <ComboBox fx:id="importFileDelimiter" editable="true" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="10.0" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label text="%import_file_encoding" wrapText="true">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="importFileEncoding" prefWidth="150.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1">
+                                 <children>
+                                    <Label text="%import_bill_header_pattern" wrapText="true" />
+                                    <TextField fx:id="importBillPattern" editable="false" text="Счет " />
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                     </content>
+                  </Tab>
+                  <Tab onSelectionChanged="#previewSelectionChanged" text="%import_preview_tab_title">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0">
+                           <children>
+                              <StackPane fx:id="previewStack" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                 <children>
+                                    <TableView fx:id="importPreviewTable" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                                    </TableView>
+                                 </children>
+                              </StackPane>
+                           </children></AnchorPane>
+                    </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </center>
 </fx:root>

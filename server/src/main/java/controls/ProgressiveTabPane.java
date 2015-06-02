@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import pojo.ProgressiveState;
 import pojo.ProgressiveViewItem;
 import utils.ControlBuilder;
 
@@ -28,10 +29,11 @@ public class ProgressiveTabPane extends BorderPane {
 
     private List<ProgressiveViewItem> navBar = new ArrayList<>();
     private int currentItemIndex = -1;
+    private ProgressiveState progressiveState = new ProgressiveState();
 
 
     public ProgressiveTabPane() throws Exception {
-        ControlBuilder.build(this);
+        ControlBuilder.bindView(this);
     }
 
     public void addProgressItem(ProgressiveViewItem item) {
@@ -48,16 +50,21 @@ public class ProgressiveTabPane extends BorderPane {
 
     private void initProgressiveItems() {
         navBar.forEach(item -> {
-            item.instance.setNavigationBar(item.navs);
+            item.instance.setNavigation(item.navs);
             item.instance.setPrevCommand(this::navigatePrev);
             item.instance.setNextCommand(this::navigateNext);
             item.instance.setCustomCommand(this::navigateCustom);
+            item.instance.setStateGetter(this::stateGetter);
 
             AnchorPane.setTopAnchor(item.instance, 0d);
             AnchorPane.setBottomAnchor(item.instance, 0d);
             AnchorPane.setLeftAnchor(item.instance, 0d);
             AnchorPane.setRightAnchor(item.instance, 0d);
         });
+    }
+
+    private ProgressiveState stateGetter() {
+        return this.progressiveState;
     }
 
     private void navigateNext() {
@@ -83,6 +90,7 @@ public class ProgressiveTabPane extends BorderPane {
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(String.format("There is no view '%s'", key));
+            alert.show();
         }
     }
 
