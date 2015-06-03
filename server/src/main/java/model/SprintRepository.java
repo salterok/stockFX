@@ -7,5 +7,6 @@ import model.dbo.Sprint;
  * Created by salterok on 01.06.2015.
  */
 public interface SprintRepository extends Dao<Sprint, Integer> {
-
+    Sprint getCurrent();
+    Sprint getPrevious();
 }

@@ -1,8 +1,10 @@
 package views;
 
+import com.sun.prism.impl.BaseMeshView;
 import constants.NavigationMethod;
 import controls.IProgressiveBasicRouting;
 import controls.IProgressiveCustomRouting;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,8 +14,9 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.TextAlignment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pojo.NavigationDescriptor;
 import pojo.ProgressiveState;
 import utils.ControlBuilder;
@@ -26,6 +29,7 @@ import java.util.function.Supplier;
  * Created by salterok on 16.05.2015.
  */
 public class BaseNavigableView extends BorderPane implements IProgressiveBasicRouting, IProgressiveCustomRouting {
+    private static final Logger logger = LogManager.getLogger(BaseMeshView.class);
     private static final String I18N_DESCRIPTION_KEY = "stage_desc";
     protected Runnable nextCommand;
     protected Runnable prevCommand;
@@ -35,7 +39,8 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
 
     public BaseNavigableView() throws Exception {
         resourceBundle = ControlBuilder.bindView(this);
-        init();
+
+        Platform.runLater(this::init); // postpone execution to allow object finish construction
     }
 
     @Override
@@ -75,7 +80,17 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
         customCommand.accept(desc.value);
     }
 
+    public final void triggerHide() {
+        Platform.runLater(this::onHide);
+    }
 
+    public final void triggerShow() {
+        Platform.runLater(this::onShown);
+    }
+
+    protected void onShown() {}
+
+    protected void onHide() {}
 
     protected String getString(String key) {
         if (!resourceBundle.containsKey(key)) {
@@ -88,10 +103,15 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     private void init() {
         setupDescription();
 
-        onLoad();
+        try {
+            onLoad();
+        } catch (Exception ex) {
+            logger.error("Error at onLoad occurred", ex);
+            throw new RuntimeException(ex);
+        }
     }
 
-    protected void onLoad() {
+    protected void onLoad() throws Exception {
 
     }
 

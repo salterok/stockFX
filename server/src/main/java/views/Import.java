@@ -5,7 +5,6 @@
 package views;
 
 import app.ImportStage;
-import com.sun.javafx.tk.Toolkit;
 import constants.ImportColumns;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -19,9 +18,8 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import app.Config;
-import model.dbo.Item;
 import pojo.LocalConfig;
-import utils.TableUtils;
+import utils.TableViewUtils;
 import utils.TaskUtil;
 
 import java.io.File;
@@ -149,7 +147,7 @@ public class Import extends BaseNavigableView {
             }
         });
         col.setGraphic(choiceBox);
-        col.setCellValueFactory(TableUtils::readOnlyIndexedCellValueFactory);
+        col.setCellValueFactory(TableViewUtils::readOnlyIndexedCellValueFactory);
         return col;
     }
 

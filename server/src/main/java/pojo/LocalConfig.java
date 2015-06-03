@@ -1,6 +1,7 @@
 package pojo;
 
 import constants.ImportColumns;
+import model.dbo.Place;
 
 import java.io.File;
 import java.util.List;
@@ -25,5 +26,10 @@ public class LocalConfig {
     public static class PreviewResult {
         public int columns;
         public List<List<String>> items;
+    }
+
+    public static class PlacesResult {
+        public List<Place> prevPlaces;
+        public List<Place> currPlaces;
     }
 }
