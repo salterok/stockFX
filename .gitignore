@@ -14,5 +14,6 @@ hs_err_pid*
 target/
 out/
 data/
+logs/
 .idea/*
 *.iml

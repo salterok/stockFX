@@ -33,7 +33,8 @@ public class SprintRepositoryImpl extends BaseDaoImpl<Sprint, Integer> implement
 
     @Override
     public Sprint getCurrent() {
-        QueryBuilder<Sprint, Integer> queryBuilder = this.queryBuilder().orderBy(Sprint.DATE_START, false);
+        QueryBuilder<Sprint, Integer> queryBuilder = this.queryBuilder()
+                .orderBy(Sprint.DATE_START, false).limit(1L);
         try {
             return queryBuilder.queryForFirst();
         } catch (SQLException ex) {
