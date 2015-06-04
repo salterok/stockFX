@@ -7,6 +7,9 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.misc.BaseDaoEnabled;
 import com.j256.ormlite.table.DatabaseTable;
+import javafx.beans.property.*;
+import utils.TableViewUtils;
+import utils.TableViewUtils.TableViewBind;
 
 import java.sql.SQLException;
 
@@ -24,18 +27,40 @@ public class Item {
 
     @DatabaseField(generatedId = true, columnName = ID)
     public int id;
+    @TableViewBind(priority = 1)
     @DatabaseField(canBeNull = false, columnName = INV_NUMBER)
-    public int invNumber;
+    public long invNumber;
     @DatabaseField(canBeNull = false, columnName = SPRINT_ID, foreign = true, foreignColumnName = Sprint.ID, foreignAutoRefresh = true)
     public Sprint sprint;
+    @TableViewBind(priority = 2)
     @DatabaseField(columnName = NAME, canBeNull = false)
     public String name;
+    @TableViewBind(priority = 3)
     @DatabaseField(columnName = BILL, canBeNull = true)
     public String bill;
     // not in db
-    public int count;
+    @TableViewBind(priority = 5)
+    public int count = -1;
+    @TableViewBind(priority = 4)
     @DatabaseField(columnName = PRICE)
     public float price;
     @ForeignCollectionField
     public ForeignCollection<RealItem> realItems;
+
+    public LongProperty invNumberProperty() {
+        return new SimpleLongProperty(invNumber);
+    }
+
+    public StringProperty billProperty() {
+        return new SimpleStringProperty(bill);
+    }
+
+    public IntegerProperty countProperty() {
+        count = realItems.size();
+        return new SimpleIntegerProperty(count);
+    }
+
+    public FloatProperty priceProperty() {
+        return new SimpleFloatProperty(price);
+    }
 }
