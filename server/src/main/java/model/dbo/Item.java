@@ -55,6 +55,10 @@ public class Item {
         return new SimpleStringProperty(bill);
     }
 
+    public StringProperty nameProperty() {
+        return new SimpleStringProperty(name);
+    }
+
     public IntegerProperty countProperty() {
         count = realItems.size();
         return new SimpleIntegerProperty(count);

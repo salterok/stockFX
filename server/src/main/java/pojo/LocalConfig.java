@@ -4,6 +4,7 @@ import constants.ImportColumns;
 import model.dbo.Item;
 import model.dbo.Place;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
@@ -35,5 +36,19 @@ public class LocalConfig {
         public List<Item> allItems;
         public List<Item> toGenQR;
         public File saveFile;
+    }
+
+    public static class QRTemplate {
+        public BufferedImage template;
+        public int itemWidth;
+        public int itemHeight;
+        public int itemDescHeight;
+
+        public QRTemplate(BufferedImage template, int itemWidth, int itemHeight, int itemDescHeight) {
+            this.template = template;
+            this.itemWidth = itemWidth;
+            this.itemHeight = itemHeight;
+            this.itemDescHeight = itemDescHeight;
+        }
     }
 }

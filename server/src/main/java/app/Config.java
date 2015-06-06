@@ -58,5 +58,7 @@ public class Config {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class QR {
         public int size = 120;
+        public int perRow = 4;
+        public int perPage = 20;
     }
 }
