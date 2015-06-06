@@ -14,5 +14,8 @@
     },
     "db": {
         "uri": "jdbc:sqlite:data/database.db"
+    },
+    "qr": {
+        "size": 120
     }
 }

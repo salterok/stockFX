@@ -99,7 +99,7 @@ public class Settings extends BaseNavigableView {
 
     private Void saveConfig(LocalConfig.SettingStageResult props) {
         try {
-            settingsStage.saveToCurrentSprint(props.currPlaces);
+            //settingsStage.saveToCurrentSprint(props.currPlaces);
             settingsStage.saveItemsQR(props.toGenQR, props.saveFile);
         }
         catch (Exception ex) {

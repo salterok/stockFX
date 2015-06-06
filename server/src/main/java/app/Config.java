@@ -37,6 +37,8 @@ public class Config {
     public Import anImport;
     @JsonProperty("db")
     public Db db;
+    @JsonProperty("qr")
+    public QR qr;
 
 
 
@@ -51,5 +53,10 @@ public class Config {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Db {
         public String uri = "jdbc:UNSET";
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class QR {
+        public int size = 120;
     }
 }
