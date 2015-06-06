@@ -45,7 +45,7 @@ public class ProgressiveTabPane extends BorderPane {
         initProgressiveItems();
         Optional<ProgressiveViewItem> item = navBar.stream().findFirst();
         if (item.isPresent())
-            setContent(item.get());
+            setContent(item.get(), null);
     }
 
     private void initProgressiveItems() {
@@ -70,14 +70,14 @@ public class ProgressiveTabPane extends BorderPane {
     private void navigateNext() {
         int nextIndex = currentItemIndex + 1;
         if (navBar.size() > nextIndex) {
-            setContent(navBar.get(nextIndex));
+            setContent(navBar.get(nextIndex), navBar.get(currentItemIndex));
         }
     }
 
     private void navigatePrev() {
         int prevIndex = currentItemIndex - 1;
         if (prevIndex >= 0) {
-            setContent(navBar.get(prevIndex));
+            setContent(navBar.get(prevIndex), navBar.get(currentItemIndex));
         }
     }
 
@@ -86,7 +86,8 @@ public class ProgressiveTabPane extends BorderPane {
                 .filter(entry -> entry.id.equals(key))
                 .findFirst();
         if (pane.isPresent())
-            setContent(pane.get());
+
+            setContent(pane.get(), navBar.get(currentItemIndex));
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(String.format("There is no view '%s'", key));
@@ -107,9 +108,13 @@ public class ProgressiveTabPane extends BorderPane {
         progressiveBar.getChildren().addAll(items);
     }
 
-    private void setContent(ProgressiveViewItem item) {
+    private void setContent(ProgressiveViewItem item, ProgressiveViewItem oldItem) {
+        if (oldItem != null) {
+            oldItem.instance.triggerHide();
+        }
         content.getChildren().clear();
         currentItemIndex = navBar.indexOf(item);
         content.getChildren().add(item.instance);
+        item.instance.triggerShow();
     }
 }

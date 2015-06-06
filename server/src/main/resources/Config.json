@@ -14,5 +14,10 @@
     },
     "db": {
         "uri": "jdbc:sqlite:data/database.db"
+    },
+    "qr": {
+        "size": 120,
+        "perRow": 4,
+        "perPage": 20
     }
 }

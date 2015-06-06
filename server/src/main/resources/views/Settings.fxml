@@ -1,5 +1,67 @@
-<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml/1">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="200.0" prefWidth="415.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <center>
 
     </center>
+   <center>
+      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+          <Tab text="%settings_places_tab_title">
+            <content>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                        <ColumnConstraints hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                     </rowConstraints>
+                     <children>
+                        <TableView fx:id="locationsTable" GridPane.columnIndex="0" />
+                        <TableView fx:id="newLocationsTable" GridPane.columnIndex="2" />
+                        <VBox alignment="CENTER" spacing="20.0" GridPane.columnIndex="1">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#addOnePlace" text="%settings_add_one_btn_title" />
+                              <Button mnemonicParsing="false" onAction="#addAllPlaces" text="%settings_add_all_btn_title" />
+                              <Button mnemonicParsing="false" onAction="#resetAllPlaces" text="%settings_reset_all_btn_title" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+            </content>
+          </Tab>
+          <Tab text="%settings_new_qr_tab_title">
+              <content>
+                  <GridPane>
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                          <ColumnConstraints hgrow="NEVER" maxWidth="70.0" minWidth="70.0" prefWidth="70.0" />
+                          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+                      </rowConstraints>
+                      <children>
+                          <TableView fx:id="itemsTable" GridPane.columnIndex="0" />
+                          <TableView fx:id="qrGenItemsTable" GridPane.columnIndex="2" />
+                          <VBox alignment="CENTER" spacing="20.0" GridPane.columnIndex="1">
+                              <children>
+                                  <Button mnemonicParsing="false" onAction="#addOneItem" text="%settings_add_one_btn_title" />
+                                  <Button mnemonicParsing="false" onAction="#addAllItems" text="%settings_add_all_btn_title" />
+                                  <Button mnemonicParsing="false" onAction="#resetAllItems" text="%settings_reset_all_btn_title" />
+                              </children>
+                          </VBox>
+                      </children>
+                  </GridPane>
+              </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </center>
 </fx:root>
