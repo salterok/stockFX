@@ -16,9 +16,9 @@
                 "value": "reports"
             },
             {
-                "title": "go settings",
+                "title": "go sync",
                 "method": "CUSTOM",
-                "value": "settings"
+                "value": "phone-sync"
             }
         ]
     },
@@ -54,11 +54,18 @@
             {
                 "title": "Назад",
                 "method": "PREV"
-            },
+            }
+        ]
+    },
+    {
+        "id": "phone-sync",
+        "title": "phone-sync",
+        "ref": "views.PhoneSync",
+        "navs": [
             {
-                "title": "sss",
+                "title": "Закрыть",
                 "method": "CUSTOM",
-                "isEnabled": false
+                "value": "action:exit"
             }
         ]
     }

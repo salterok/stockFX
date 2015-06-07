@@ -1,5 +1,6 @@
 package model.dbo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -19,11 +20,13 @@ public class Place {
     @TableViewBind(priority = 1)
     @DatabaseField(generatedId = true, columnName = ID)
     public int id;
+    @JsonIgnore
     @DatabaseField(canBeNull = false, columnName = SPRINT_ID, foreign = true, foreignColumnName = Sprint.ID, foreignAutoRefresh = true)
     public Sprint sprint;
     @TableViewBind(priority = 2)
     @DatabaseField(canBeNull = false, columnName = TITLE)
     public String title;
+    @JsonIgnore
     @ForeignCollectionField
     public ForeignCollection<RealItem> realItems;
 

@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 /**
  * Created by salterok on 16.05.2015.
  */
-public class BaseNavigableView extends BorderPane implements IProgressiveBasicRouting, IProgressiveCustomRouting {
+public abstract class BaseNavigableView extends BorderPane implements IProgressiveBasicRouting, IProgressiveCustomRouting {
     private static final Logger logger = LogManager.getLogger(BaseMeshView.class);
     private static final String I18N_DESCRIPTION_KEY = "stage_desc";
     protected Runnable nextCommand;
@@ -40,7 +40,7 @@ public class BaseNavigableView extends BorderPane implements IProgressiveBasicRo
     public BaseNavigableView() throws Exception {
         resourceBundle = ControlBuilder.bindView(this);
 
-        Platform.runLater(this::init); // postpone execution to allow object finish construction
+        Platform.runLater(this::init); // postpone execution to allow object to finish construction
     }
 
     @Override

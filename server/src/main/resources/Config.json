@@ -19,5 +19,11 @@
         "size": 120,
         "perRow": 4,
         "perPage": 20
+    },
+    "terminalSync": {
+        "privateKey": "-2304_stockFX_3295-",
+        "discoveryListenPort": 62308,
+        "rootPath": "/stockFX",
+        "restPort": 63800
     }
 }

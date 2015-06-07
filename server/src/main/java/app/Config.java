@@ -39,6 +39,8 @@ public class Config {
     public Db db;
     @JsonProperty("qr")
     public QR qr;
+    @JsonProperty("terminalSync")
+    public TerminalSync terminalSync;
 
 
 
@@ -60,5 +62,13 @@ public class Config {
         public int size = 120;
         public int perRow = 4;
         public int perPage = 20;
+    }
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class TerminalSync {
+        public String privateKey = "";
+        public int discoveryListenPort;
+        public String rootPath = "/stockFX";
+        public int restPort;
     }
 }

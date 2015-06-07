@@ -1,5 +1,6 @@
 package model.dbo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -29,7 +30,7 @@ public class Sprint {
     public Date dateEnd;
     @DatabaseField(canBeNull = true, columnName = OPERATOR)
     public String operator;
-
+    @JsonIgnore
     @ForeignCollectionField
     public ForeignCollection<Item> items;
 }
